@@ -8,7 +8,7 @@ function yellow
 end
 
 function red
-    set_color -o d30102
+    set_color -o bf0000
 end
 
 function cyan
