@@ -19,6 +19,10 @@ function white
     set_color -o fdf6e3
 end
 
+function purple
+    set_color -o 9c008e
+end
+
 function dim
     set_color -o 4f4f4f
 end
@@ -117,6 +121,11 @@ function fish_prompt
                 echo -n -s (white)" -"$behind_count(off)
             end
         end
+    end
+
+    if test -n "$VIRTUAL_ENV"
+        set -l virtualenv_name (basename "$VIRTUAL_ENV")
+        echo -n -s (purple)" ($virtualenv_name)"(off)
     end
 
     if test "$code" = 0
