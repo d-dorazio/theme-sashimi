@@ -34,15 +34,14 @@ end
 # Git
 function git::is_repo
     test -d .git
-    or command git rev-parse --git-dir >/dev/null ^/dev/null
+    or command git rev-parse --git-dir >/dev/null 2>/dev/null
 end
 
 function git::branch_name
     git::is_repo
     and begin
-        command git symbolic-ref --short HEAD ^/dev/null
-
-        or command git show-ref --head -s --abbrev | head -n1 ^/dev/null
+        command git symbolic-ref --short HEAD 2>/dev/null
+        or command git show-ref --head -s --abbrev | head -n1 2>/dev/null
     end
 end
 
@@ -86,10 +85,10 @@ function fish_prompt
     printf (dim)(prompt_pwd)" "(off)
 
     if git::is_repo
-        set -l branch (git::branch_name ^/dev/null)
+        set -l branch (git::branch_name 2>/dev/null)
         set -l ref (git show-ref --head --abbrev | awk '{print substr($0,0,7)}' | sed -n 1p)
 
-        if command git symbolic-ref HEAD >/dev/null ^/dev/null
+        if command git symbolic-ref HEAD >/dev/null 2>/dev/null
             if git::is_staged
                 printf (cyan)"$branch"(off)
             else
@@ -104,8 +103,8 @@ function fish_prompt
         end
 
         for remote in (git remote)
-            set -l behind_count (echo (command git rev-list $branch..$remote/$branch ^/dev/null | wc -l | tr -d " "))
-            set -l ahead_count (echo (command git rev-list $remote/$branch..$branch ^/dev/null | wc -l | tr -d " "))
+            set -l behind_count (echo (command git rev-list $branch..$remote/$branch 2>/dev/null | wc -l | tr -d " "))
+            set -l ahead_count (echo (command git rev-list $remote/$branch..$branch 2>/dev/null | wc -l | tr -d " "))
 
             if test $ahead_count -ne 0
                 or test $behind_count -ne 0
