@@ -122,11 +122,6 @@ function fish_prompt
         end
     end
 
-    if test -n "$VIRTUAL_ENV"
-        set -l virtualenv_name (basename "$VIRTUAL_ENV")
-        echo -n -s (purple)" ($virtualenv_name)"(off)
-    end
-
     if test "$code" = 0
         echo -n -s (dim)" $symbol"(off)
     else
